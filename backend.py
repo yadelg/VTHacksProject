@@ -1,7 +1,19 @@
 import requests
+
+# Python Packages
+
+import pandas as pd # Used for tables (ex. csv).
+import os # Python library for navigating computer files.
+
+import seaborn as sns # Used with matplotlib for graphing
+import matplotlib.pyplot as plt # visualization tool
+
+import sklearn # linear regression tool
+import numpy as np
+
 from bs4 import BeautifulSoup
 
-url = "https://data.bls.gov/timeseries/APUS23B72610?amp%253bdata_tool=XGtable&output_view=data&include_graphs=true"
+url = "https://data.bls.gov/timeseries/A    PUS23B72610?amp%253bdata_tool=XGtable&output_view=data&include_graphs=true"
 
 
 def fetch(url):
@@ -30,3 +42,21 @@ def fetch(url):
         print(row)
 
 fetch(url)
+
+
+
+
+# Data fetching code -- Use pandas to read CSV
+
+# TEMPORARY, replace temp with CSV file name
+temp = 0
+data_path = temp # <--- name of CSV ex. electricity_perKWH.csv
+energy_data = pd.read_csv(data_path)
+
+energy_data.head()
+# plot comparing price over years to 
+sns.scatterplot(x = 'Year', y = 'Price_Per_KWH', data = energy_data)
+
+
+
+
