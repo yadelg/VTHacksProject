@@ -41,28 +41,32 @@ function App() {
   }, [submitted]);
 
   return (
-    <div className="App">
-      <span>{price}</span>
-      <div>
-        <select onChange={handleCityDropDown}>
-          <option value="Boston">Boston</option>
-          <option value="New York">New York</option>
-          <option value="Atlanta">Atlanta</option>
-          <option value="Washington D.C.">Washington D.C.</option>
-        </select>
-        <select onChange={handleYearDropDown}>
-          <option value="2024">2024</option>
-          <option value="2025">2025</option>
-          <option value="2026">2026</option>
-          <option value="2027">2027</option>
-          <option value="2028">2028</option>
-        </select>
-        <br>
-        </br>
-        <button onClick={submit}>
-          Submit
-        </button>
-      </div>
+    <div class="container">
+        <h1>Energy Price Prediction</h1>
+        <div class="form-group">
+            <label for="city-select">Select City:</label>
+            <select id="city-select" onChange={handleCityDropDown}>
+                <option value="Boston">Boston</option>
+                <option value="New York">New York</option>
+                <option value="Atlanta">Atlanta</option>
+                <option value="Washington D.C.">Washington D.C.</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="year-select">Select Year:</label>
+            <select id="year-select" onChange={handleYearDropDown}>
+                <option value="2024">2024</option>
+                <option value="2025">2025</option>
+                <option value="2026">2026</option>
+                <option value="2027">2027</option>
+                <option value="2028">2028</option>
+            </select>
+        </div>
+        <button id="submit-button" onClick={submit}>Submit</button>
+        <div id="result">
+            <h2>Prediction:</h2>
+            <span id="price">{price}</span>
+        </div>
     </div>
   );
 }
