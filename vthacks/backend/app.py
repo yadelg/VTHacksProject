@@ -44,36 +44,52 @@ def model(year, city):
     #print(energy_data[['count', city, 'Prediction']])
 
     # Print the prediction for the specific year
-    return prediction[0][0]
+    return '%.2f'%(prediction[0][0])
 
-#print(model(2030, "Boston"))
+#print(model(2038, "Washington D.C."))
 
-city = "Boston"
-year = 2028
+dict = {
+    "city": "Boston",
+    "year": 2024
+}
 
-@app.route('/search', methods=['GET'])
-def return_prediction():
-    
-    return jsonify(
-        {
-            "year": [
-                2028
-            ],
-            "prediction": [
-                model(year, city)
-            ]
-        }
-    )
+# cityInput = "Boston"
+# yearInput = 2028
     
 @app.route('/submit', methods=['POST'])
 def get_data():
     data = request.get_json()
-    city = data["city"]
-    year = data["year"]
-    print(year + " " + city)
-
+    dict["city"] = data["city"]
+    dict["year"] = int(data["year"])
+    prediction = model(dict["year"], dict["city"])
+    #print(year + " " + city)
+    print(prediction)
     return data
         
+        
+# @app.route('/search', methods=['GET'])
+# def return_prediction():
+#     prediction = model(yearInput, cityInput)
+#     return jsonify(
+#         {
+            
+#             "prediction": [
+#                 prediction
+#                 #random.randint(3, 9)
+#             ]
+#         }
+#     )
+
+@app.route('/search', methods=['GET'])
+def return_prediction():
+    #data = get_data()
+    
+    #print(data)
+    prediction = model(dict["year"], dict["city"])
+    print(dict["year"])
+    print(dict["city"])
+    return jsonify({"prediction": prediction})
+    
     
 if __name__ == "__main__":
     app.run(debug=True)

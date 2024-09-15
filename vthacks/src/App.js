@@ -5,12 +5,12 @@ import './App.css';
 function App() {
   const [searchedYear, setSearchedYear] = useState(2028);
   const [searchedCity, setSearchedCity] = useState("");
-  const [priceArray, setPriceArray] = useState([0, 0, 0, 0]);
+  const [price, setPrice] = useState(0);
   const [submitted, setSubmitted] = useState(false);
 
   const fetchAPI = async() => {
     const response = await axios.get("http://localhost:5000/search");
-    setPriceArray(response.data.prediction);
+    setPrice(response.data.prediction);
   }
 
   const submit = async(e) => {
@@ -42,11 +42,7 @@ function App() {
 
   return (
     <div className="App">
-      {
-        priceArray.map((price, index) => (
-          <span key={index}>{price},</span>
-        ))
-      }
+      <span>{price}</span>
       <div>
         <select onChange={handleCityDropDown}>
           <option value="Boston">Boston</option>
