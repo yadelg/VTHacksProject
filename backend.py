@@ -1,32 +1,35 @@
-import requests
-from bs4 import BeautifulSoup
+import pandas as pd
+import numpy as np
+from sklearn.linear_model import LinearRegression
 
-url = "https://data.bls.gov/timeseries/APUS23B72610?amp%253bdata_tool=XGtable&output_view=data&include_graphs=true"
+def model(year, city):
+    data_path = "./all_cities_data_count_price.csv"  # Name of CSV file
+    energy_data = pd.read_csv(data_path)
+    currYear = 2024
+    dataMonths = (2024 - 2018) * 12
 
+    # Initializing X and Y Variables 
+    X = energy_data[['count']]
+    Y = energy_data[[city]]
 
-def fetch(url):
-    response = requests.get(url)
-    soup = BeautifulSoup(response.content, 'html.parser')
+    # Declaring and Training the Model
+    linear = LinearRegression()
+    linear.fit(X, Y)
 
-    odd_rows = soup.find_all('tr', class_="odd")
-    even_rows = soup.find_all('tr', class_="even")  
+    # Prepare input for prediction as a 2D array
+    input_data = np.array([[(year - currYear) * 12 + dataMonths]])
 
-    odd_data = [[td.text for td in row.find_all('td')] for row in odd_rows]
-    even_data = [[td.text for td in row.find_all('td')] for row in even_rows]
+    # Make prediction for the single input value
+    prediction = linear.predict(input_data)
 
-    combined_data = []
+    # If you want to see the prediction for the entire DataFrame
+    # Calculate the prediction for each row based on the number of months
+    energy_data['Prediction'] = linear.predict(X)
 
-    for odd, even in zip(odd_data, even_data):
-        combined_data.append(odd)
-        combined_data.append(even)
+    # Print predictions for the whole DataFrame
+    print(energy_data[['count', city, 'Prediction']])
 
-    if len(odd_data) > len(even_data): 
-        combined_data.extend(odd_data[len(even_data):])
+    # Print the prediction for the specific year
+    return prediction[0][0]
 
-    elif len(even_data) > len(odd_data):
-        combined_data.extend(even_data[len(odd_data):])
-
-    for row in combined_data:
-        print(row)
-
-fetch(url)
+print(model(2030, "Boston"))
